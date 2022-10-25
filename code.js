@@ -29,16 +29,42 @@ var qRef = ref(getDatabase());
 var snapshot = await get(qRef);
 var val = snapshot.val();
 
-for (var key in val) // in yeshivot
+function func(t)
 {
-  var musag = val[key][0];
-  var big_count = musag % MAX_REPONSES;
-  var small_count = Math.floor(musag / MAX_REPONSES);
-  big_all_count += big_count;
-  small_all_count += small_count;
-  count_for_all += `<p>${key}: ${small_count}, ${big_count}</p>\n`;
+  document.getElementById('yeshivot').hidden = true;
+  document.getElementById('avg-container').hidden = false;
+  const avg = document.getElementById('avg-container');
+  const children = document.getElementById('musagim').children;
+  const count_ktanim = Math.floor(val[t.id][0] / MAX_REPONSES);
+  const count_gdolim = val[t.id][0] % MAX_REPONSES;
+  avg.innerHTML += `<p>כמה ענו: ${count_ktanim}, ${count_gdolim}, ${count_ktanim+count_gdolim}`;
+  for (var i = 0; i < children.length; i++)
+  {
+    const num = val[t.id][i+1];
+    const ktanim = Math.floor(num / MAX_REPONSES);
+    const gdolim = num % MAX_REPONSES;
+
+    const k = (100 * ktanim / count_ktanim).toFixed(1);
+    const g = (100 * gdolim / count_gdolim).toFixed(1);
+    const all = (100 * (ktanim + gdolim) / (count_ktanim + count_gdolim)).toFixed(1);
+
+    console.log(val[t.id][i+1]);
+    avg.innerHTML += `<p>${children[i].innerHTML}: ק - ${k}, ג - ${g}, כולם - ${all}`;
+  }
 }
 
-document.getElementById('count').innerHTML += '' + big_all_count + ', ' + small_all_count
-document.getElementById('count-for-all').innerHTML += count_for_all;
+var sum = [0, 0, 0];
 
+for (var key in val) // in yeshivot
+{
+  const yeshivot = document.getElementById('yeshivot');
+  const count_ktanim = Math.floor(val[key][0] / MAX_REPONSES);
+  const count_gdolim = val[key][0] % MAX_REPONSES;
+  yeshivot.innerHTML += `<p id="${key}" onclick="func(this)">${key} (${count_ktanim}, ${count_gdolim}, ${count_ktanim+count_gdolim})</p>`;
+  sum[0] += count_ktanim;
+  sum[1] += count_gdolim;
+  sum[2] += (count_gdolim+count_ktanim);
+}
+document.getElementById('all').innerHTML += `${sum[0]}, ${sum[1]}, ${sum[2]}`;
+
+window.func = func;
