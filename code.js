@@ -22,9 +22,6 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 
-var count_for_all = '';
-var big_all_count = 0;
-var small_all_count = 0;
 var qRef = ref(getDatabase());
 var snapshot = await get(qRef);
 var val = snapshot.val();
@@ -37,7 +34,7 @@ function func(t)
   const children = document.getElementById('musagim').children;
   const count_ktanim = Math.floor(val[t.id][0] / MAX_REPONSES);
   const count_gdolim = val[t.id][0] % MAX_REPONSES;
-  avg.innerHTML += `<p>כמה ענו: ${count_ktanim}, ${count_gdolim}, ${count_ktanim+count_gdolim}`;
+  avg.innerHTML += `<h2>${t.id}</h2><p>כמה ענו: ${count_ktanim}, ${count_gdolim}, ${count_ktanim+count_gdolim}`;
   for (var i = 0; i < children.length; i++)
   {
     const num = val[t.id][i+1];
@@ -47,8 +44,8 @@ function func(t)
     const k = (100 * ktanim / count_ktanim).toFixed(1);
     const g = (100 * gdolim / count_gdolim).toFixed(1);
     const all = (100 * (ktanim + gdolim) / (count_ktanim + count_gdolim)).toFixed(1);
+    console.log(children[i].innerHTML, num, ktanim, gdolim, k, g, all);
 
-    console.log(val[t.id][i+1]);
     avg.innerHTML += `<p>${children[i].innerHTML}: ק - ${k}, ג - ${g}, כולם - ${all}`;
   }
 }
