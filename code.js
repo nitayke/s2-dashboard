@@ -44,7 +44,6 @@ function func(t)
     const k = (100 * ktanim / count_ktanim).toFixed(1);
     const g = (100 * gdolim / count_gdolim).toFixed(1);
     const all = (100 * (ktanim + gdolim) / (count_ktanim + count_gdolim)).toFixed(1);
-    console.log(children[i].innerHTML, num, ktanim, gdolim, k, g, all);
 
     avg.innerHTML += `<p>${children[i].innerHTML}: ק - ${k}, ג - ${g}, כולם - ${all}`;
   }
